@@ -131,7 +131,18 @@ class PyConcreteAdmin(object):
                     self._compile_pye_file(args, fullpath)
                 elif args.pyc:
                     self._compile_pyc_file(args, fullpath)
-
+    def _remove_pyc_dir(self, args, folder):
+        # ignore patterns
+        patterns = self._get_ignore_patterns(args)
+        for file in os.listdir(folder):
+            fullpath = join(folder, file)
+            if (file in IGNORE_FILES or self._fnmatch(fullpath, patterns)):
+                continue
+            if isdir(fullpath):
+                self._removepyc_dir(args, fullpath)
+            elif fullpath.endswith('.pyc'):
+                os.remove(fullpath)
+                
     def _compile_pyc_file(self, args, py_file):
         pyc_file = py_file + 'c'
         pyc_exists = exists(pyc_file)
