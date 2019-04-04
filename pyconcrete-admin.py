@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/home/indatacore/anaconda3/envs/offline2/bin/python
 #
 # Copyright 2015 Falldog Hsieh <falldog7@gmail.com>
 #
@@ -102,9 +102,10 @@ class PyConcreteAdmin(object):
                     self._compile_pye_file(args, source)
                 elif args.pyc:
                     self._compile_pyc_file(args, source)
-
+                    
             elif isdir(source):
                 self._compile_dir(args, source)
+           
 
     def _get_ignore_patterns(self, args):
         patterns = []
@@ -115,7 +116,8 @@ class PyConcreteAdmin(object):
                 pat = "*" + pat
             patterns.append(pat)
         return patterns
-
+    
+                
     def _compile_dir(self, args, folder):
         # ignore patterns
         patterns = self._get_ignore_patterns(args)
@@ -131,18 +133,10 @@ class PyConcreteAdmin(object):
                     self._compile_pye_file(args, fullpath)
                 elif args.pyc:
                     self._compile_pyc_file(args, fullpath)
-    def _remove_pyc_dir(self, args, folder):
-        # ignore patterns
-        patterns = self._get_ignore_patterns(args)
-        for file in os.listdir(folder):
-            fullpath = join(folder, file)
-            if (file in IGNORE_FILES or self._fnmatch(fullpath, patterns)):
-                continue
-            if isdir(fullpath):
-                self._removepyc_dir(args, fullpath)
             elif fullpath.endswith('.pyc'):
-                os.remove(fullpath)
-                
+                    os.remove(fullpath)
+
+
     def _compile_pyc_file(self, args, py_file):
         pyc_file = py_file + 'c'
         pyc_exists = exists(pyc_file)
@@ -223,7 +217,7 @@ class PyConcreteAdmin(object):
         [!seq]  matches any char not in seq
         """
         return any(fnmatch.fnmatch(name, pat) for pat in patterns)
-
+                
 
 if __name__ == '__main__':
     admin = PyConcreteAdmin()
